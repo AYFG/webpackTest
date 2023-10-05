@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const childProcess = require("child_process");
 
 // 모듈을 밖으로 빼내는 노드 JS문법이다. 엔트리 , 아웃풋 그리고 번들링 모드를 설정할 수 있다.
 
@@ -37,7 +38,11 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: `마지막 빌드 시간은 : ${new Date().toLocaleString()}`,
+      banner: `
+      Commit Version : ${childProcess.execSync("git rev-parse --short HEAD")}
+      Committer : ${childProcess.execSync("git config user.name")}
+      마지막 빌드 시간은 : ${new Date().toLocaleString()}
+      `,
     }),
   ],
 };
